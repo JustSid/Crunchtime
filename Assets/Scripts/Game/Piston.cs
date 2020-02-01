@@ -13,6 +13,9 @@ public class Piston : WirePowerAction
     public float headDistance = 1f;
     private Player activePlayer = null;
 
+    [SerializeField]
+    private LayerMask squashTestMask;
+
     public Transform head;
     private Vector3 headStart;
 
@@ -49,6 +52,27 @@ public class Piston : WirePowerAction
         travellingUp = true;
     }
 
+    private void Update()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(new Ray(head.position, transform.up), out hit, 100, squashTestMask, QueryTriggerInteraction.Ignore))
+        {
+            Debug.DrawLine(head.position, head.position + transform.up * hit.distance, Color.green, 1f);
+            float dist = hit.distance;
+
+            Vector3 extents = head.GetComponent<Renderer>().bounds.extents * 0.5f;
+            extents += transform.up * dist * 0.5f;
+            Collider[] squashed = Physics.OverlapBox(head.position + transform.up * dist * 0.5f, extents, Quaternion.identity);
+            foreach (Collider collider in squashed)
+            {
+                if (collider.bounds.min.y > head.position.y && collider.bounds.max.y - collider.bounds.min.y > dist - .1f)
+                {
+                    Destroy(collider.gameObject);
+                }
+            }
+        }
+    }
+
     private void FixedUpdate()
     {
         if (activated)
@@ -59,7 +83,7 @@ public class Piston : WirePowerAction
                 {
                     activePlayer.GetComponent<PlayerController>().AddForce(Vector3.up * upForcePlayer);
                 }
-                float mag = upForce * Time.deltaTime;
+                float mag = upForce * Time.fixedDeltaTime;
                 float remaining = headDistance - (head.position - headStart).magnitude;
                 if (remaining <= mag)
                 {
@@ -73,7 +97,7 @@ public class Piston : WirePowerAction
             }
             else
             {
-                float mag = downForce * Time.deltaTime;
+                float mag = downForce * Time.fixedDeltaTime;
                 Vector3 dist = head.position - headStart;
                 if (dist.magnitude <= mag)
                 {
@@ -88,8 +112,6 @@ public class Piston : WirePowerAction
                 {
                     head.position -= dist.normalized * mag;
                 }
-
-
             }
         }
     }

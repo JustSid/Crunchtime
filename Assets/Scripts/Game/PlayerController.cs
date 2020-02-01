@@ -2,11 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
-    private CharacterController controller;
+    private Rigidbody controller;
 
     private Vector3 velocity = new Vector3();
 
@@ -44,25 +44,32 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private List<Transform> groundReferences = new List<Transform>();
 
+
     void Awake()
     {
-        controller = gameObject.GetComponent<CharacterController>();
+        controller = gameObject.GetComponent<Rigidbody>();
     }
     // Update is called once per frame
     void Update()
     {
         Vector3 movement = new Vector3();
-        bool grounded = controller.isGrounded;
+        bool grounded = false;
+        Vector3 groundNormal = Vector3.up;
+        velocity.y = controller.velocity.y;
         for (int i = 0; i < groundReferences.Count; i++)
         {
-            bool ground = Physics.Raycast(new Ray(groundReferences[i].position, Vector3.down), groundCheckDistance, groundMask);
+            bool ground = Physics.Raycast(new Ray(groundReferences[i].position + Vector3.up * groundCheckDistance, Vector3.down), groundCheckDistance * 2f, groundMask, QueryTriggerInteraction.Ignore);
             if (ground)
             {
+
                 grounded = true;
                 break;
             }
         }
-        RaycastHit raycastHit;
+        if (!grounded)
+        {
+            Debug.Log("floating!");
+        }
 
         float left = Input.GetKey(KeyCode.A) ? 1 * (player.allowLeftMovement ? 1 : 0) : 0;
         float right = Input.GetKey(KeyCode.D) ? 1 * (player.allowRightMovement ? 1 : 0) : 0;
@@ -77,37 +84,53 @@ public class PlayerController : MonoBehaviour
         {
             velocity.x = Mathf.Min(Mathf.Abs(velocity.x), maxHorizontalVelocity) * Mathf.Sign(velocity.x);
         }
+
+
+        if ((!grounded || Time.time - lastJumpTime <= jumpCoolDown && player.allowJump) && Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("No jump ground " + grounded + " " + (Time.time - lastJumpTime <= jumpCoolDown));
+        }
+
         if (grounded && Input.GetKeyDown(KeyCode.Space) && Time.time - lastJumpTime >= jumpCoolDown && player.allowJump)
         {
             lastJumpTime = Time.time;
             velocity.y = jumpForce;
             grounded = false;
         }
+
         else if (!disableGravity)
         {
             velocity += gravityDirection * gravityStrength * Time.deltaTime;
         }
-        if (grounded)
-        {
-            velocity.y = 0;
-        }
-        controller.Move(velocity);
-        float maxDist = 0;
-        for (int i = 0; i < groundReferences.Count; i++)
-        {
-            Transform groundRef = groundReferences[2];
-            bool hit = Physics.Raycast(new Ray(groundRef.position + Vector3.up, Vector3.down), out raycastHit, 1.1f + Mathf.Abs(velocity.x * 2.0f), groundMask);
-            if (hit)
-            {
-                Debug.DrawLine(raycastHit.point, raycastHit.point + raycastHit.normal, Color.red, 0.1f);
-                maxDist = Mathf.Min((raycastHit.point - groundRef.position).y, maxDist);
-            }
-        }
-        transform.position += Vector3.up * maxDist;
+        controller.velocity = (velocity);
     }
 
-    internal void AddForce(Vector3 velocityChangeAbs)
+    private void FixedUpdate()
     {
-        this.velocity += velocityChangeAbs;
+        if (velocity.y <= 0)
+        {
+            float maxDist = 0;
+            RaycastHit raycastHit;
+
+            for (int i = 0; i < groundReferences.Count; i++)
+            {
+                Transform groundRef = groundReferences[2];
+                bool hit = Physics.Raycast(new Ray(groundRef.position + Vector3.up, Vector3.down), out raycastHit, .1f + Mathf.Abs(velocity.x) * .2f, groundMask, QueryTriggerInteraction.Ignore);
+                if (hit)
+                {
+                    Debug.DrawLine(raycastHit.point, raycastHit.point + raycastHit.normal, Color.red, 0.1f);
+                    maxDist = Mathf.Min((raycastHit.point - groundRef.position).y, maxDist);
+                }
+            }
+            if (maxDist < .1f)
+            {
+                controller.MovePosition(transform.position + Vector3.up * maxDist);
+            }
+        }
+    }
+
+    internal void AddForce(Vector3 vector3)
+    {
+        this.velocity += vector3;
     }
 }

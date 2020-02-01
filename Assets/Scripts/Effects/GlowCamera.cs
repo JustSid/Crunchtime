@@ -26,6 +26,7 @@ public class GlowCamera : MonoBehaviour
     private void Update()
     {
         buffer.Clear();
+        buffer.ClearRenderTarget(true, false, Color.black);
         foreach (MeshFilter renderer in renderers)
         {
             buffer.DrawMesh(renderer.sharedMesh, renderer.transform.localToWorldMatrix, glowShader);
