@@ -34,7 +34,6 @@ public class Pickup : HeldInteractable
         base.Interact();
         if (interactable != null)
         {
-            Debug.Log("Plug it in");
             interactable.GetComponentInParent<PickupInsert>().OnPluggedIn();
             pickedup.DropHeld();
         }
