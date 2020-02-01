@@ -25,11 +25,11 @@ public class PickupInsert : MonoBehaviour
 
     public void OnPluggedIn()
     {
-        powerActions.OnPowerEnabled();
+        powerActions.OnPowerEnabledInternal();
     }
 
     public void OnUnplugged()
     {
-        powerActions.OnPowerDisabled();
+        powerActions.OnPowerDisabledInternal();
     }
 }

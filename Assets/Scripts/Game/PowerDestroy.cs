@@ -7,7 +7,7 @@ public class PowerDestroy : WirePowerAction
     [SerializeField]
     private List<GameObject> disableOnPower = new List<GameObject>();
 
-    public override void OnPowerEnabled()
+    protected override void OnPowerEnabled()
     {
         base.OnPowerEnabled();
         for (int i = 0; i < disableOnPower.Count; i++)

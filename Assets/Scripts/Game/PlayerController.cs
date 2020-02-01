@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
@@ -103,6 +104,11 @@ public class PlayerController : MonoBehaviour
             }
         }
         transform.position += Vector3.up * maxDist;
+    }
+
+    internal void AddForce(Vector3 velocityChangeAbs)
+    {
+        this.velocity += velocityChangeAbs;
     }
 }
 
