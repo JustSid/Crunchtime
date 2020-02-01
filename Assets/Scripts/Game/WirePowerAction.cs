@@ -4,13 +4,34 @@ using UnityEngine;
 
 public class WirePowerAction : MonoBehaviour
 {
-    public virtual void OnPowerEnabled()
+    [SerializeField]
+    protected bool powered = false;
+
+    public void OnPowerEnabledInternal()
+    {
+        if (!powered)
+        {
+            powered = true;
+            OnPowerEnabled();
+        }
+    }
+
+    public void OnPowerDisabledInternal()
+    {
+        if (powered)
+        {
+            powered = false;
+            OnPowerDisabled();
+        }
+    }
+
+    protected virtual void OnPowerEnabled()
     {
 
     }
 
-    public virtual void OnPowerDisabled()
+    protected virtual void OnPowerDisabled()
     {
-
+    
     }
 }
