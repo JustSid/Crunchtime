@@ -33,7 +33,7 @@ public class Player : Actor
 
     private void Awake()
     {
-        myCols = GetComponentsInChildren<Collider>();
+        myCols = GetComponentsInChildren<Collider>(true);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -94,12 +94,10 @@ public class Player : Actor
     {
         if (pickup != null)
         {
+            pickup.OnDrop();
             Collider[] hits = pickup.GetComponentsInChildren<Collider>();
-            foreach (Collider col in myCols)
-            {
-                Physics.IgnoreCollision(hits[0], col, false);
-            }
-            pickup.GetComponent<Rigidbody>().useGravity = true;
+            pickup.gameObject.layer = 11;
+            pickup.GetComponent<Rigidbody>().isKinematic = false;
             pickup = null;
         }
     }
@@ -125,7 +123,7 @@ public class Player : Actor
                 Collider[] hits = Physics.OverlapBox(transform.position + Vector3.up + Vector3.right, Vector3.one * .5f, Quaternion.identity, pickupLayer);
                 if (hits.Length > 0)
                 {
-                    SetGlowFilter(hits[0].gameObject.GetComponent<MeshFilter>());
+                    SetGlowFilter(hits[0].gameObject.GetComponentInChildren<MeshFilter>());
                     if (Input.GetKeyDown(KeyCode.E) && pickup == null)
                     {
 
@@ -134,11 +132,8 @@ public class Player : Actor
                             pickup = hits[0].GetComponent<Pickup>();
                             pickup.OnPickup(this);
                             SetGlowFilter(null);
-                            foreach (Collider col in myCols)
-                            {
-                                Physics.IgnoreCollision(hits[0], col, false);
-                            }
-                            pickup.GetComponent<Rigidbody>().useGravity = false;
+                            pickup.gameObject.layer = 31;
+                            pickup.GetComponent<Rigidbody>().isKinematic = true;
                         }
                     }
                 }

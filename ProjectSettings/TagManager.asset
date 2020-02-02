@@ -35,8 +35,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - PostLayer
+  - Held
   m_SortingLayers:
   - name: Default
     uniqueID: 0

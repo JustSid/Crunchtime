@@ -12,7 +12,10 @@ public class Pickup : HeldInteractable
     private Player pickedup;
     private InsertZone interactable;
 
-    private void Awake()
+    private bool pluggedIn = false;
+
+
+    protected virtual void Awake()
     {
         col = GetComponent<Collider>();
         body = GetComponent<Rigidbody>();
@@ -22,6 +25,18 @@ public class Pickup : HeldInteractable
     {
         base.OnPickup(player);
         this.pickedup = player;
+    }
+
+    private void Update()
+    {
+        if (pickedup != null)
+        {
+            transform.rotation = Quaternion.Euler(new Vector3(135, 0, 0));
+        }
+        else if (pluggedIn)
+        {
+            transform.rotation = Quaternion.Euler(new Vector3(-90, 0, 0));
+        }
     }
 
     public override void OnDrop()
@@ -34,8 +49,12 @@ public class Pickup : HeldInteractable
         base.Interact();
         if (interactable != null)
         {
-            interactable.GetComponentInParent<PickupInsert>().OnPluggedIn();
+            body.isKinematic = true;
+            pluggedIn = true;
+            Debug.Log("Plug in!");
+            interactable.GetComponentInParent<PickupInsert>().OnPluggedIn(this as Plug);
             pickedup.DropHeld();
+            body.isKinematic = true;
         }
     }
 

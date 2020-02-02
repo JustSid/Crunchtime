@@ -41,6 +41,11 @@ public class PickupInsert : MonoBehaviour
         }
     }
 
+
+    public Plug currentPlug = null;
+
+    public Transform plugPoint;
+
     private void OnDrawGizmos()
     {
         if (collider == null)
@@ -54,8 +59,20 @@ public class PickupInsert : MonoBehaviour
         }
     }
 
-    public void OnPluggedIn()
+    private void Update()
     {
+        if (currentPlug != null)
+        {
+            currentPlug.transform.position = plugPoint.transform.position;
+            currentPlug.transform.rotation = Quaternion.Euler(-90, 0, 0);
+        }
+    }
+
+    public void OnPluggedIn(Plug plug)
+    {
+        this.currentPlug = plug;
+        plug.OnSocketConnected();
+
         foreach(WirePowerAction action in powerActions)
             action.OnPowerEnabledInternal();
 
@@ -68,6 +85,12 @@ public class PickupInsert : MonoBehaviour
 
     public void OnUnplugged()
     {
+    	if (currentPlug != null)
+        {
+            currentPlug.OnSocketDisconnected();
+        }
+        currentPlug = null;
+
         foreach(WirePowerAction action in powerActions)
             action.OnPowerDisabledInternal();
 
