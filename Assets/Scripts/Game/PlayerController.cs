@@ -46,7 +46,8 @@ public class PlayerController : MonoBehaviour
 
     private int hasGroundVelocityDecay = 0;
 
-
+    [SerializeField]
+    private Transform rotationTransform;
     void Awake()
     {
         controller = gameObject.GetComponent<Rigidbody>();
@@ -54,7 +55,7 @@ public class PlayerController : MonoBehaviour
 
     public void EnableGroundVelocityDecay()
     {
-        hasGroundVelocityDecay --;
+        hasGroundVelocityDecay--;
     }
     public void DisableGroundVelocityDecay()
     {
@@ -81,6 +82,18 @@ public class PlayerController : MonoBehaviour
 
         float left = Input.GetKey(KeyCode.A) ? 1 * (player.allowLeftMovement ? 1 : 0) : 0;
         float right = Input.GetKey(KeyCode.D) ? 1 * (player.allowRightMovement ? 1 : 0) : 0;
+        float scale = (rotationTransform.eulerAngles.y + 360);
+        if (left > 0 || velocity.x < 0)
+        {
+            scale = 180;
+        }
+        else
+        {
+            scale = 0;
+        }
+        Vector3 euler = rotationTransform.eulerAngles;
+        euler.y = scale;
+        rotationTransform.eulerAngles = euler;
         movement += Vector3.right * moveForce * right * (velocity.x < 0 ? 2 : 1);
         movement += Vector3.left * moveForce * left * (velocity.x > 0 ? 2 : 1);
         velocity += movement * Time.deltaTime;

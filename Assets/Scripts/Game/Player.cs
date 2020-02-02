@@ -108,6 +108,7 @@ public class Player : Actor
         {
             if (pickup != null)
             {
+                float angle = transform.eulerAngles.y;
                 pickup.transform.position = Vector3.Lerp(pickup.transform.position, pickupPoint.transform.position, Time.deltaTime * 5f);
                 if (Input.GetKeyDown(KeyCode.Q))
                 {
@@ -157,8 +158,9 @@ public class Player : Actor
             }
         }
         RaycastHit hit;
-        if (Physics.Raycast(new Ray(transform.position, Vector3.up), out hit, 2.2f, walkLayer))
+        if (Physics.Raycast(new Ray(transform.position + Vector3.up, Vector3.up), out hit, 2.2f, walkLayer))
         {
+            Debug.Log("Pass through " + hit.collider.name);
             foreach (Collider col in myCols)
             {
                 Physics.IgnoreCollision(col, hit.collider, true);
@@ -167,7 +169,7 @@ public class Player : Actor
         }
         if (Input.GetKey(KeyCode.S))
         {
-            if (Physics.Raycast(new Ray(transform.position + Vector3.up * 2f, Vector3.down), out hit, 2.2f, walkLayer))
+            if (Physics.Raycast(new Ray(transform.position + Vector3.up, Vector3.down), out hit, 2.2f, walkLayer))
             {
                 foreach (Collider col in myCols)
                 {
@@ -176,7 +178,8 @@ public class Player : Actor
                 colliders.Add(hit.collider);
             }
         }
-        Collider[] tcols = Physics.OverlapCapsule(transform.position + Vector3.up * 0.5f, transform.position + Vector3.up * 1.5f, 0.45f, walkLayer);
+        //keeps player from getting stuck in layers already falling through
+        Collider[] tcols = Physics.OverlapCapsule(transform.position + Vector3.up * (0.5f), transform.position + Vector3.up * 1.5f, 0.4f, walkLayer);
         for (int i = 0; i < tcols.Length; i++)
         {
             foreach (Collider col in myCols)
@@ -186,5 +189,12 @@ public class Player : Actor
             colliders.Add(tcols[i]);
         }
 
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.matrix = Matrix4x4.identity;
+        Gizmos.DrawWireSphere(transform.position + Vector3.up * 0.5f, .4f);
+        Gizmos.DrawWireSphere(transform.position + Vector3.up * 1.5f, .4f);
     }
 }
