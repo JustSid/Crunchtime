@@ -577,6 +577,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powered: 0
   attachmentPoint: {fileID: 1677937664}
+  openedTarget: {fileID: 0}
+  closedTarget: {fileID: 0}
   oneShot: 0
 --- !u!4 &234014176
 Transform:
@@ -919,6 +921,11 @@ PrefabInstance:
         type: 3}
       propertyPath: nextLevel.m_Handle
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598723990643690014, guid: ce0fcdc55813e4502918951ca230cea6,
+        type: 3}
+      propertyPath: sceneName
+      value: Level-5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce0fcdc55813e4502918951ca230cea6, type: 3}
