@@ -25,10 +25,10 @@ public class PickupInsert : MonoBehaviour
             go.transform.SetParent((transform));
             go.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
 
-            Vector3[] segments = new Vector3[2];
-            segments[0] = action.attachmentPoint ? action.attachmentPoint.position : action.transform.position;
-            segments[1] = transform.position;
+            Vector3 startPoint = action.attachmentPoint ? action.attachmentPoint.position : action.transform.position;
+            Vector3[] segments = BezierThing.CalculateAutoAttachmentPoints(startPoint, transform.position);
 
+            renderer.positionCount = segments.Length;
             renderer.SetPositions(segments);
 
             renderer.startColor = Color.red;
