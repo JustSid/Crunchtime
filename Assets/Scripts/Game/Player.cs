@@ -18,6 +18,9 @@ public class Player : Actor
     [SerializeField]
     private float pickupDistance = 3f;
 
+    [SerializeField]
+    private float fallTimeDelay = 0.05f;
+
     public LayerMask walkLayer;
 
     public LayerMask pickupLayer;
@@ -33,6 +36,8 @@ public class Player : Actor
     private List<PickupInsert> inserts = new List<PickupInsert>();
 
     private MeshFilter activeGlowFilter;
+
+    private float lastFallTime = 0f;
 
     private void Awake()
     {
@@ -171,7 +176,7 @@ public class Player : Actor
         RaycastHit hit;
         if (Physics.Raycast(new Ray(transform.position + Vector3.up, Vector3.up), out hit, 2.2f, walkLayer))
         {
-            Debug.Log("Pass through " + hit.collider.name);
+            lastFallTime = Time.time;
             foreach (Collider col in myCols)
             {
                 Physics.IgnoreCollision(col, hit.collider, true);
@@ -182,6 +187,7 @@ public class Player : Actor
         {
             if (Physics.Raycast(new Ray(transform.position + Vector3.up, Vector3.down), out hit, 2.2f, walkLayer))
             {
+                lastFallTime = Time.time;
                 foreach (Collider col in myCols)
                 {
                     Physics.IgnoreCollision(col, hit.collider, true);
@@ -189,17 +195,23 @@ public class Player : Actor
                 colliders.Add(hit.collider);
             }
         }
-        //keeps player from getting stuck in layers already falling through
-        Collider[] tcols = Physics.OverlapCapsule(transform.position + Vector3.up * (0.5f), transform.position + Vector3.up * 1.5f, 0.4f, walkLayer);
-        for (int i = 0; i < tcols.Length; i++)
+        if (Time.time - lastFallTime <= fallTimeDelay)
         {
-            foreach (Collider col in myCols)
+            //keeps player from getting stuck in layers already falling through
+            Collider[] tcols = Physics.OverlapCapsule(transform.position + Vector3.up * (0.5f), transform.position + Vector3.up * 1.5f, 0.4f, walkLayer);
+            for (int i = 0; i < tcols.Length; i++)
             {
-                Physics.IgnoreCollision(col, tcols[i], true);
+                foreach (Collider col in myCols)
+                {
+                    Physics.IgnoreCollision(col, tcols[i], true);
+                }
+                colliders.Add(tcols[i]);
             }
-            colliders.Add(tcols[i]);
+            if (tcols.Length > 0)
+            {
+                lastFallTime = Time.time;
+            }
         }
-
     }
 
     private void OnDrawGizmos()
