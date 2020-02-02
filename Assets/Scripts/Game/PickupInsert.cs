@@ -79,12 +79,18 @@ public class PickupInsert : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        Gizmos.color = Color.red;
+
+        foreach(WirePowerAction action in powerActions)
+            Gizmos.DrawLine(action.transform.position, transform.position);
+
         if (collider == null)
         {
             return;
         }
         if (collider != null)
         {
+            Gizmos.color = Color.white;
             Gizmos.matrix = collider.transform.localToWorldMatrix;
             Gizmos.DrawWireCube(collider.center, collider.size);
         }
