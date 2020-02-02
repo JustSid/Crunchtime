@@ -96,7 +96,6 @@ public class Player : Actor
         {
             pickup.OnDrop();
             Collider[] hits = pickup.GetComponentsInChildren<Collider>();
-            pickup.gameObject.layer = 11;
             pickup.GetComponent<Rigidbody>().isKinematic = false;
             pickup = null;
         }
@@ -125,19 +124,22 @@ public class Player : Actor
                 if (hits.Length > 0)
                 {
                     SetGlowFilter(hits[0].gameObject.GetComponentInChildren<MeshFilter>());
-                    if (Input.GetKeyDown(KeyCode.E) && pickup == null)
-                    {
 
-                        if (hits.Length > 0)
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        HeldInteractable potentialInteractable = hits[0].GetComponent<Pickup>();
+                        if (potentialInteractable.CanPickup())
                         {
-                            pickup = hits[0].GetComponent<Pickup>();
+                            pickup = potentialInteractable;
+
                             pickup.OnPickup(this);
                             SetGlowFilter(null);
-                            pickup.gameObject.layer = 31;
                             pickup.GetComponent<Rigidbody>().isKinematic = true;
                         }
                     }
                 }
+                else
+                    SetGlowFilter(null);
             }
         }
 
