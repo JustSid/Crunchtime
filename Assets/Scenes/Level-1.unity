@@ -958,8 +958,8 @@ Transform:
   - {fileID: 274112120}
   - {fileID: 1599166651}
   - {fileID: 401007789}
-  - {fileID: 1093491330}
   - {fileID: 930540159}
+  - {fileID: 1093491330}
   - {fileID: 1915465350}
   - {fileID: 817839282}
   - {fileID: 1720317798}
@@ -2709,6 +2709,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Flag
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598723990643690014, guid: ce0fcdc55813e4502918951ca230cea6,
+        type: 3}
+      propertyPath: sceneName
+      value: Level-2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce0fcdc55813e4502918951ca230cea6, type: 3}
