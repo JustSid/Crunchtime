@@ -142,6 +142,7 @@ MonoBehaviour:
     m_Bits: 2048
   pickupPoint: {fileID: 4305418869376824518}
   pickup: {fileID: 0}
+  plugHoldingRange: 2.5
 --- !u!54 &4305418869540649277
 Rigidbody:
   m_ObjectHideFlags: 0

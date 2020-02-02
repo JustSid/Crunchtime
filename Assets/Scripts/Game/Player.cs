@@ -39,6 +39,10 @@ public class Player : Actor
 
     private float lastFallTime = 0f;
 
+    public float plugHoldingRange = 1.4f;
+
+
+
     private void Awake()
     {
         myCols = GetComponentsInChildren<Collider>(true);
@@ -119,7 +123,7 @@ public class Player : Actor
             {
                 float angle = transform.eulerAngles.y;
                 pickup.transform.position = Vector3.Lerp(pickup.transform.position, pickupPoint.transform.position, Time.deltaTime * 5f);
-                if (Input.GetKeyDown(KeyCode.Q))
+                if (Input.GetKeyDown(KeyCode.Mouse1))
                 {
                     DropHeld();
                 }
@@ -163,9 +167,9 @@ public class Player : Actor
         dif = dif.normalized;
         if (Vector3.Dot(dif, Vector3.up) > -0.5f)
         {
-            pickupPoint.position = transform.position + Vector3.up + dif.normalized * 1.4f;
+            pickupPoint.position = transform.position + Vector3.up + dif.normalized * plugHoldingRange;
         }
-
+        
         for (int i = 0; i < colliders.Count; i++)
         {
             foreach (Collider col in myCols)
