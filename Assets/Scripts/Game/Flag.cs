@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Flag : WirePowerAction
 {
@@ -9,6 +10,9 @@ public class Flag : WirePowerAction
 
     [SerializeField]
     private MeshRenderer flagRenderer;
+
+    [SerializeField]
+    private string sceneName;
 
     private bool alwaysPowered = false;
 
@@ -24,7 +28,7 @@ public class Flag : WirePowerAction
         Player player = other.gameObject.GetComponent<Player>();
         if (powered || alwaysPowered)
         {
-            Debug.Log("You wiiiinn!");
+            SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
         }
     }
 
