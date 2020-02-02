@@ -142,6 +142,8 @@ public class Player : Actor
                         }
                     }
                 }
+                else
+                    SetGlowFilter(null);
             }
         }
 
