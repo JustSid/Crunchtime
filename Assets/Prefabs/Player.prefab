@@ -102,7 +102,7 @@ MonoBehaviour:
   gravityDirection: {x: 0, y: -1, z: 0}
   gravityStrength: 50
   moveForce: 50
-  jumpForce: 15
+  jumpForce: 17
   maxHorizontalVelocity: 4
   groundCheckDistance: 0.2
   jumpCoolDown: 0.1
@@ -133,6 +133,7 @@ MonoBehaviour:
   allowPickup: 1
   allowJump: 1
   pickupDistance: 3
+  fallTimeDelay: 0.05
   walkLayer:
     serializedVersion: 2
     m_Bits: 1024
