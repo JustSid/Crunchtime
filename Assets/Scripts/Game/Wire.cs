@@ -151,7 +151,7 @@ public class Wire : MonoBehaviour
 
     private Vector3 AdjustSegmentPosition(WireSegment segment, Vector3 newPosition)
     {
-#if true
+#if false
         Vector3 direction = segment.transform.position - newPosition;
 
         Ray ray = new Ray(segment.transform.position, -direction.normalized);
