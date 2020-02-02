@@ -12,6 +12,7 @@ public class KillZone : MonoBehaviour
         Player player = other.gameObject.GetComponent<Player>();
         if(player)
         {
+           
             SceneManager.LoadScene(levelName, LoadSceneMode.Single);
         }
     }

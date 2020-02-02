@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Piston : WirePowerAction
 {
@@ -89,7 +90,16 @@ public class Piston : WirePowerAction
 
                     if (hit.distance <= collider.bounds.max[axis] - collider.bounds.min[axis])
                     {
-                        Destroy(collider.gameObject);
+                        Player player = collider.gameObject.GetComponent<Player>();
+                        if (player != null)
+                        {
+                            SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
+                            break;
+                        }
+                        else
+                        {
+                            Destroy(collider.gameObject);
+                        }
                     }
                 }
             }
