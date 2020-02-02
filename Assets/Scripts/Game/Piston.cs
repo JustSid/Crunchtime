@@ -26,7 +26,6 @@ public class Piston : WirePowerAction
 
     private void Awake()
     {
-        spawnTime = Time.time;
         headStart = head.transform.position;
         if (!usePistonNeck)
         {
