@@ -15,6 +15,9 @@ public class Player : Actor
 
     public bool allowJump = false;
 
+    [SerializeField]
+    private float pickupDistance = 3f;
+
     public LayerMask walkLayer;
 
     public LayerMask pickupLayer;
@@ -101,6 +104,8 @@ public class Player : Actor
         }
     }
 
+
+    private static RaycastHit[] hits = new RaycastHit[128];
     private void Update()
     {
         if (allowPickup)
@@ -113,28 +118,32 @@ public class Player : Actor
                 {
                     DropHeld();
                 }
-                if (Input.GetKeyDown(KeyCode.E))
+                if (Input.GetMouseButtonDown(0))
                 {
                     pickup.Interact();
                 }
             }
             else if (pickup == null)
             {
-                Collider[] hits = Physics.OverlapBox(transform.position + Vector3.up + Vector3.right, Vector3.one * .5f, Quaternion.identity, pickupLayer);
-                if (hits.Length > 0)
+                int hitCount = Physics.RaycastNonAlloc(Camera.main.ScreenPointToRay(Input.mousePosition), hits, Camera.main.farClipPlane, pickupLayer);
+                if (hitCount > 0)
                 {
-                    SetGlowFilter(hits[0].gameObject.GetComponentInChildren<MeshFilter>());
-
-                    if (Input.GetKeyDown(KeyCode.E))
+                    Vector3 dist = (transform.position + Vector3.up) - hits[0].collider.transform.position;
+                    if (dist.magnitude < pickupDistance)
                     {
-                        HeldInteractable potentialInteractable = hits[0].GetComponent<Pickup>();
-                        if (potentialInteractable.CanPickup())
-                        {
-                            pickup = potentialInteractable;
+                        SetGlowFilter(hits[0].collider.gameObject.GetComponentInChildren<MeshFilter>());
 
-                            pickup.OnPickup(this);
-                            SetGlowFilter(null);
-                            pickup.GetComponent<Rigidbody>().isKinematic = true;
+                        if (Input.GetMouseButtonDown(0))
+                        {
+                            HeldInteractable potentialInteractable = hits[0].collider.gameObject.GetComponent<Pickup>();
+                            if (potentialInteractable.CanPickup())
+                            {
+                                pickup = potentialInteractable;
+
+                                pickup.OnPickup(this);
+                                SetGlowFilter(null);
+                                pickup.GetComponent<Rigidbody>().isKinematic = true;
+                            }
                         }
                     }
                 }

@@ -77,7 +77,7 @@ public class Plug : Pickup
         if (interactable != null)
         {
             PickupInsert insert = interactable.GetComponentInParent<PickupInsert>();
-            if (insert.ProngType == prongType)
+            if (insert.ProngType == prongType && insert.currentPlug == null)
             {
                 socket = insert;
 
