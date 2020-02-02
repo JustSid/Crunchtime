@@ -617,6 +617,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1a6da03c121af341b4317a19af33856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ringMaterialIndex: 1
   prongType: 0
 --- !u!54 &226587825
 Rigidbody:
@@ -1094,6 +1095,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powered: 0
+  attachmentPoint: {fileID: 2007123111}
   disableOnPower:
   - {fileID: 2007123107}
 --- !u!4 &363843966
@@ -1719,6 +1721,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powered: 0
+  attachmentPoint: {fileID: 0}
   direction: {x: 1, y: 0, z: 0}
 --- !u!65 &995424222
 BoxCollider:
@@ -2000,6 +2003,8 @@ MonoBehaviour:
   powerActions:
   - {fileID: 363843965}
   - {fileID: 995424221}
+  currentPlug: {fileID: 0}
+  plugPoint: {fileID: 0}
 --- !u!1 &1698673942
 GameObject:
   m_ObjectHideFlags: 0
@@ -2126,6 +2131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1a6da03c121af341b4317a19af33856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ringMaterialIndex: 1
   prongType: 0
 --- !u!23 &1790683690
 MeshRenderer:
