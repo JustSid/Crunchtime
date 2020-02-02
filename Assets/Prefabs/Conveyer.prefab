@@ -442,6 +442,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   powered: 0
   attachmentPoint: {fileID: 0}
+  spinners:
+  - {fileID: 6877429271779966395}
+  - {fileID: 6877429272676757198}
+  - {fileID: 6877429273756543692}
+  - {fileID: 6877429272183096612}
   direction: {x: -1, y: 0, z: 0}
 --- !u!1 &7165887052010589944
 GameObject:

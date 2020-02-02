@@ -8,10 +8,49 @@ public class ConveyorBelt : WirePowerAction
     private PlayerController activeController = null;
 
     [SerializeField]
+    private YouSpinMeRoundRightRound[] spinners = new YouSpinMeRoundRightRound[4];
+
+    [SerializeField]
     private Vector3 direction = Vector3.right;
 
-    void Start()
+    private bool fudgedPlayer = false;
+
+    void Awake()
     {
+        foreach (YouSpinMeRoundRightRound spinner in spinners)
+        {
+            spinner.localAxis = new Vector3(0, 0, direction.x);
+        }
+    }
+
+    void Update()
+    {
+        foreach(YouSpinMeRoundRightRound spinner in spinners)
+        {
+            spinner.rate = powered ? 100 : 0;
+        }
+    }
+
+    protected override void OnPowerDisabled()
+    {
+        base.OnPowerDisabled();
+
+        if (fudgedPlayer)
+        {
+            activeController.EnableGroundVelocityDecay();
+            fudgedPlayer = false;
+        }
+    }
+
+    protected override void OnPowerEnabled()
+    {
+        base.OnPowerEnabled();
+
+        if (!fudgedPlayer && activeController)
+        {
+            activeController.DisableGroundVelocityDecay();
+            fudgedPlayer = true;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -19,11 +58,14 @@ public class ConveyorBelt : WirePowerAction
         Player player = other.gameObject.GetComponent<Player>();
         if(player != null)
         {
-            Debug.Log("Enable player conveying");
             activePlayer = player;
             activeController = activePlayer.GetComponent<PlayerController>();
 
-            activeController.DisableGroundVelocityDecay();
+            if(!fudgedPlayer && powered)
+            {
+                activeController.DisableGroundVelocityDecay();
+                fudgedPlayer = true;
+            }
         }
     }
 
@@ -32,8 +74,11 @@ public class ConveyorBelt : WirePowerAction
         Player player = other.gameObject.GetComponent<Player>();
         if(player != null && activePlayer == player)
         {
-            Debug.Log("Disable player conveying");
-            activeController.EnableGroundVelocityDecay();
+            if (fudgedPlayer)
+            {
+                activeController.EnableGroundVelocityDecay();
+                fudgedPlayer = false;
+            }
 
             activeController = null;
             activePlayer = null;
