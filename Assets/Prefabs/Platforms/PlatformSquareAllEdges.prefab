@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 7168733264794702144}
   - component: {fileID: 2197929390421175149}
   - component: {fileID: 6629627267804091519}
-  m_Layer: 0
+  - component: {fileID: 3461959132849250648}
+  m_Layer: 8
   m_Name: PlatformSquareAllEdges
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,3 +80,16 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3596012512906862009}
   m_Mesh: {fileID: -1550514412580984892, guid: 4c673065127a58b4496c0ef0c2d60521, type: 3}
+--- !u!65 &3461959132849250648
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3596012512906862009}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2, y: 2, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
