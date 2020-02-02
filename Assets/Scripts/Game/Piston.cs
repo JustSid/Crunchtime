@@ -93,7 +93,9 @@ public class Piston : WirePowerAction
                         Player player = collider.gameObject.GetComponent<Player>();
                         if (player != null)
                         {
-                            SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
+                            player.OnDeath();
+                            Destroy(collider.gameObject);
+                            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
                             break;
                         }
                         else

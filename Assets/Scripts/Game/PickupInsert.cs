@@ -25,6 +25,12 @@ public class PickupInsert : MonoBehaviour
 
 
     [SerializeField]
+    private AudioClip plugSound;
+
+    [SerializeField]
+    private AudioClip unplugSound;
+
+    [SerializeField]
     private BoxCollider standCollider;
 
     public InsertZone insertZone;
@@ -101,7 +107,7 @@ public class PickupInsert : MonoBehaviour
 
     private void Update()
     {
-        if(currentPlug && insertZone)
+        if (currentPlug && insertZone)
         {
             Plug temp = currentPlug;
             currentPlug = null;
@@ -147,13 +153,23 @@ public class PickupInsert : MonoBehaviour
 
     public void OnPluggedIn(Plug plug)
     {
+        if (currentPlug == null)
+        {
+            AudioSource.PlayClipAtPoint(plugSound, transform.position);
+        }
         currentPlug = plug;
         standCollider.enabled = true;
+
     }
 
     public void OnUnplugged()
     {
+        if (currentPlug != null)
+        {
+            AudioSource.PlayClipAtPoint(unplugSound, transform.position);
+        }
         currentPlug = null;
         standCollider.enabled = false;
+
     }
 }

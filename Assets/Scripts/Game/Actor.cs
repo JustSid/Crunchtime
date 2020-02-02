@@ -7,13 +7,16 @@ public class Actor : MonoBehaviour
 {
     public UnityEvent deathEvent;
 
+    [SerializeField]
+    private AudioClip deathEffect;
+
     private void OnDestroy()
     {
-        OnDeath();
     }
 
     public void OnDeath()
     {
+        AudioSource.PlayClipAtPoint(deathEffect, transform.position);
         if (deathEvent != null)
         {
             deathEvent.Invoke();
