@@ -12,7 +12,7 @@ public class ReloadScript : MonoBehaviour
     public static ReloadScript inst;
     private SpawnPoint[] spawners;
     private Transform playerTransform;
-    private PeekeyBoi cameraRig;
+    //private PeekeyBoi cameraRig;
 
     void Awake()
     {
