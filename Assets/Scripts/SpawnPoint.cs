@@ -12,9 +12,9 @@ public class SpawnPoint : MonoBehaviour
     {
         Transform playerTransform = Instantiate(playerPrefab).transform;
         playerTransform.SetPositionAndRotation(transform.position, transform.rotation);
-        //PeekeyBoi cameraRig = Instantiate(cameraRigPrefab).GetComponent<PeekeyBoi>();
-        //cameraRig.followTarget = playerTransform;
-        //cameraRig.SnapToTarget();
+        PeekeyBoi cameraRig = Instantiate(cameraRigPrefab).GetComponent<PeekeyBoi>();
+        cameraRig.followTarget = playerTransform;
+        cameraRig.SnapToTarget();
     }
 
     private void OnDrawGizmos()
