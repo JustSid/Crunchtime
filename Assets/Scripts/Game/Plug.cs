@@ -76,7 +76,6 @@ public class Plug : Pickup
         base.Interact();
         if (interactable != null)
         {
-
             PickupInsert insert = interactable.GetComponentInParent<PickupInsert>();
             if (insert.ProngType == prongType)
             {
@@ -84,7 +83,7 @@ public class Plug : Pickup
 
                 body.isKinematic = true;
                 socket.OnPluggedIn(this as Plug);
-                pickedup.DropHeld();
+                LeaveHeld();
                 body.isKinematic = true;
             }
         }

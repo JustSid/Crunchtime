@@ -37,13 +37,13 @@ public class Pickup : HeldInteractable
 
     public override void OnDrop()
     {
+        base.OnDrop();
         this.pickedup = null;
     }
 
-    public override void Interact()
+    public void LeaveHeld()
     {
-        base.Interact();
-
+        pickedup.DropHeld();
     }
 
     private void OnTriggerEnter(Collider other)
