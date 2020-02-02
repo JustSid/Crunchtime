@@ -2202,6 +2202,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1141352456}
     m_Modifications:
+    - target: {fileID: 1478747687826980608, guid: 81c7d762dd6456247b73b174d9a3083e,
+        type: 3}
+      propertyPath: m_Name
+      value: Neck
+      objectReference: {fileID: 0}
     - target: {fileID: 3941546766389218445, guid: 81c7d762dd6456247b73b174d9a3083e,
         type: 3}
       propertyPath: m_LocalScale.z
@@ -2241,6 +2246,21 @@ PrefabInstance:
         type: 3}
       propertyPath: squashKillMask.m_Bits
       value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 3941546766469826423, guid: 81c7d762dd6456247b73b174d9a3083e,
+        type: 3}
+      propertyPath: travellingUp
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3941546766469826423, guid: 81c7d762dd6456247b73b174d9a3083e,
+        type: 3}
+      propertyPath: pistonNeck
+      value: 
+      objectReference: {fileID: 793737291}
+    - target: {fileID: 3941546766469826423, guid: 81c7d762dd6456247b73b174d9a3083e,
+        type: 3}
+      propertyPath: usePistonNeck
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3941546766469826427, guid: 81c7d762dd6456247b73b174d9a3083e,
         type: 3}
@@ -2326,6 +2346,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c8225bf6e0203e46a47dfaf4e63ebb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &793737291 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1478747687826980608, guid: 81c7d762dd6456247b73b174d9a3083e,
+    type: 3}
+  m_PrefabInstance: {fileID: 793737289}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &827001706
 PrefabInstance:
   m_ObjectHideFlags: 0

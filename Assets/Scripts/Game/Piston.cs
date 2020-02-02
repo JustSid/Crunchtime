@@ -16,7 +16,10 @@ public class Piston : WirePowerAction
     private LayerMask squashTestMask;
     [SerializeField]
     private LayerMask squashKillMask;
-
+    [SerializeField]
+    private bool usePistonNeck = false;
+    [SerializeField]
+    private GameObject pistonNeck;
     public Transform head;
     private Vector3 headStart;
 
@@ -24,6 +27,10 @@ public class Piston : WirePowerAction
     private void Awake()
     {
         headStart = head.transform.position;
+        if (!usePistonNeck)
+        {
+            Destroy(pistonNeck);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -129,6 +136,11 @@ public class Piston : WirePowerAction
                     head.position -= dist.normalized * mag;
                 }
             }
+        }
+        if (usePistonNeck)
+        {
+            pistonNeck.transform.position = (headStart + head.position) * 0.5f;
+            pistonNeck.transform.localScale = Vector3.Max(Vector3.up * (headStart - head.position).magnitude, new Vector3(1, 1, 1) - Vector3.up);
         }
     }
 
