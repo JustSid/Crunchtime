@@ -27,6 +27,8 @@ public class PickupInsert : MonoBehaviour
     [SerializeField]
     private BoxCollider standCollider;
 
+    public InsertZone insertZone;
+
     public Plug.ProngType ProngType
     {
         get { return prongType; }
@@ -58,12 +60,6 @@ public class PickupInsert : MonoBehaviour
             renderer.material = material;
 
             lineRenderers.Add(renderer);
-        }
-
-        if (currentPlug)
-        {
-            OnPluggedIn(currentPlug);
-            currentPlug.socket = this;
         }
     }
 
@@ -102,6 +98,14 @@ public class PickupInsert : MonoBehaviour
 
     private void Update()
     {
+        if(currentPlug && insertZone)
+        {
+            Plug temp = currentPlug;
+            currentPlug = null;
+            temp.InteractWithInsert(insertZone);
+            insertZone = null;
+        }
+
         if (currentPlug != null)
         {
             currentPlug.transform.position = plugPoint.transform.position;
