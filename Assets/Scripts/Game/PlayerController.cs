@@ -101,10 +101,7 @@ public class PlayerController : MonoBehaviour
         {
             velocity.x *= Time.deltaTime * 50;
         }
-        if (grounded)
-        {
-            velocity.x = Mathf.Min(Mathf.Abs(velocity.x), maxHorizontalVelocity) * Mathf.Sign(velocity.x);
-        }
+        velocity.x = Mathf.Min(Mathf.Abs(velocity.x), maxHorizontalVelocity * (grounded ? 1 : 1.5f)) * Mathf.Sign(velocity.x);
 
 
         if ((!grounded || Time.time - lastJumpTime <= jumpCoolDown && player.allowJump) && Input.GetKeyDown(KeyCode.Space))

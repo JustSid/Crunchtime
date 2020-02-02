@@ -473,6 +473,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlatformSquareSingleEdge (32)
       objectReference: {fileID: 0}
+    - target: {fileID: 2114876270707848674, guid: a19c81580e0eb8c49b93953552a5416c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 9120249069586012635, guid: a19c81580e0eb8c49b93953552a5416c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -486,7 +491,7 @@ PrefabInstance:
     - target: {fileID: 9120249069586012635, guid: a19c81580e0eb8c49b93953552a5416c,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.0000011325
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 9120249069586012635, guid: a19c81580e0eb8c49b93953552a5416c,
         type: 3}
@@ -531,7 +536,7 @@ PrefabInstance:
     - target: {fileID: 9120249069586012635, guid: a19c81580e0eb8c49b93953552a5416c,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: -1
+      value: -0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a19c81580e0eb8c49b93953552a5416c, type: 3}
@@ -1781,6 +1786,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlatformSquareSingleEdge (31)
       objectReference: {fileID: 0}
+    - target: {fileID: 2114876270707848674, guid: a19c81580e0eb8c49b93953552a5416c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 9120249069586012635, guid: a19c81580e0eb8c49b93953552a5416c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1839,7 +1849,7 @@ PrefabInstance:
     - target: {fileID: 9120249069586012635, guid: a19c81580e0eb8c49b93953552a5416c,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: -1
+      value: -0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a19c81580e0eb8c49b93953552a5416c, type: 3}

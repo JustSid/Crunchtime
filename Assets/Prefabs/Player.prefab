@@ -100,11 +100,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1280
   gravityDirection: {x: 0, y: -1, z: 0}
-  gravityStrength: 200
+  gravityStrength: 50
   moveForce: 50
-  jumpForce: 35
-  maxHorizontalVelocity: 10
-  groundCheckDistance: 0.15
+  jumpForce: 15
+  maxHorizontalVelocity: 4
+  groundCheckDistance: 0.2
   jumpCoolDown: 0.1
   disableGravity: 0
   player: {fileID: 4305418869540649251}
