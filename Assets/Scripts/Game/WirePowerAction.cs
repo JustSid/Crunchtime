@@ -7,6 +7,9 @@ public class WirePowerAction : MonoBehaviour
     [SerializeField]
     protected bool powered = false;
 
+    [SerializeField]
+    public Transform attachmentPoint = null;
+
     public void OnPowerEnabledInternal()
     {
         if (!powered)
