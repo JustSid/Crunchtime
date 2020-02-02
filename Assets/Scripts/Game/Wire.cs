@@ -62,6 +62,16 @@ public class Wire : MonoBehaviour
         segmentPositions = new Vector3[totalSegments];
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.magenta;
+
+        if(plugs[0] && plugs[1])
+            Gizmos.DrawLine(plugs[0].transform.position, plugs[1].transform.position);
+        else
+            Gizmos.DrawSphere(transform.position, 5.0f);
+    }
+
     public bool HasPower()
     {
         foreach (Plug plug in plugs)
