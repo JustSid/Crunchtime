@@ -44,11 +44,23 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private List<Transform> groundReferences = new List<Transform>();
 
+    private int hasGroundVelocityDecay = 0;
+
 
     void Awake()
     {
         controller = gameObject.GetComponent<Rigidbody>();
     }
+
+    public void EnableGroundVelocityDecay()
+    {
+        hasGroundVelocityDecay --;
+    }
+    public void DisableGroundVelocityDecay()
+    {
+        hasGroundVelocityDecay++;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -76,7 +88,7 @@ public class PlayerController : MonoBehaviour
         movement += Vector3.right * moveForce * right * (velocity.x < 0 ? 2 : 1);
         movement += Vector3.left * moveForce * left * (velocity.x > 0 ? 2 : 1);
         velocity += movement * Time.deltaTime;
-        if (grounded && left + right == 0)
+        if (grounded && (left + right == 0) && hasGroundVelocityDecay == 0)
         {
             velocity.x *= Time.deltaTime * 50;
         }
@@ -131,6 +143,7 @@ public class PlayerController : MonoBehaviour
 
     internal void AddForce(Vector3 vector3)
     {
-        this.velocity += vector3;
+        velocity += vector3;
+        velocity.x = Mathf.Min(Mathf.Abs(velocity.x), maxHorizontalVelocity) * Mathf.Sign(velocity.x);
     }
 }
