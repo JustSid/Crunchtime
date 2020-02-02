@@ -43,7 +43,14 @@ public class Pickup : HeldInteractable
 
     public void LeaveHeld()
     {
-        pickedup.DropHeld();
+        if(pickedup)
+            pickedup.DropHeld();
+    }
+
+    public void InteractWithInsert(InsertZone insert)
+    {
+        interactable = insert;
+        Interact();
     }
 
     private void OnTriggerEnter(Collider other)

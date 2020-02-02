@@ -5,4 +5,10 @@ using UnityEngine;
 public class InsertZone : MonoBehaviour
 {
     public PickupInsert insert;
+
+    void Awake()
+    {
+        if(insert)
+            insert.insertZone = this;
+    }
 }
