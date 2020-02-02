@@ -24,10 +24,8 @@ public class Piston : WirePowerAction
     public Transform head;
     private Vector3 headStart;
 
-
     private void Awake()
     {
-
         headStart = head.transform.position;
         if (!usePistonNeck)
         {
@@ -71,45 +69,47 @@ public class Piston : WirePowerAction
         {
             Debug.DrawLine(head.position, head.position + killdir * hit.distance, Color.green, 1f);
             float dist = hit.distance;
-
-            Vector3 extents = head.GetComponent<Renderer>().bounds.extents * 0.95f;
-            extents += killdir * dist * 0.5f;
-            Collider[] squashed = Physics.OverlapBox(head.position + killdir * dist * 0.5f, extents, Quaternion.identity, squashKillMask);
-            if (squashed.Length > 0)
+            if (dist > 0.2f)
             {
-                int axis = 0;
-                float largeV = Mathf.Abs(killdir[0]);
-                for (int i = 1; i < 3; i++)
+                Vector3 extents = head.GetComponent<Renderer>().bounds.extents * 0.95f;
+                extents += killdir * dist * 0.5f;
+                Collider[] squashed = Physics.OverlapBox(head.position + killdir * dist * 0.5f, extents, Quaternion.identity, squashKillMask);
+                if (squashed.Length > 0)
                 {
-                    if (Mathf.Abs(killdir[i]) > largeV)
+                    int axis = 0;
+                    float largeV = Mathf.Abs(killdir[0]);
+                    for (int i = 1; i < 3; i++)
                     {
-                        axis = i;
-                        largeV = Mathf.Abs(killdir[i]);
-                    }
-                }
-                foreach (Collider collider in squashed)
-                {
-
-                    if (hit.distance <= collider.bounds.max[axis] - collider.bounds.min[axis])
-                    {
-                        Player player = collider.gameObject.GetComponent<Player>();
-                        if (player != null)
+                        if (Mathf.Abs(killdir[i]) > largeV)
                         {
-                            player.OnDeath();
-                            if (this.enabled)
-                            {
-                                this.enabled = false;
-                            }
-                            DestroyImmediate(collider.gameObject);
-                            DestroyImmediate(gameObject);
-                            Debug.Log("Player Loading Scene");
-                            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
-                            return;
-
+                            axis = i;
+                            largeV = Mathf.Abs(killdir[i]);
                         }
-                        else
+                    }
+                    foreach (Collider collider in squashed)
+                    {
+
+                        if (hit.distance <= collider.bounds.max[axis] - collider.bounds.min[axis])
                         {
-                            Destroy(collider.gameObject);
+                            Player player = collider.gameObject.GetComponent<Player>();
+                            if (player != null)
+                            {
+                                player.OnDeath();
+                                if (this.enabled)
+                                {
+                                    this.enabled = false;
+                                }
+                                DestroyImmediate(collider.gameObject);
+                                DestroyImmediate(gameObject);
+                                Debug.Log("Player Loading Scene");
+                                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+                                return;
+
+                            }
+                            else
+                            {
+                                Destroy(collider.gameObject);
+                            }
                         }
                     }
                 }
