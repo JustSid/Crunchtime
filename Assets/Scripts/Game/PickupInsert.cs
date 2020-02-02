@@ -82,7 +82,10 @@ public class PickupInsert : MonoBehaviour
         Gizmos.color = Color.red;
 
         foreach (WirePowerAction action in powerActions)
-            Gizmos.DrawLine(action.transform.position, transform.position);
+        {
+            if(action)
+                Gizmos.DrawLine(action.transform.position, transform.position);
+        }
 
         if (collider == null)
         {
