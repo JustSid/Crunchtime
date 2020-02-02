@@ -10,9 +10,6 @@ public class Plug : Pickup
         TwoNA, ThreeNA
     }
 
-    [SerializeField]
-    private bool powered = false;
-
     private bool pluggedIn = false;
 
 
@@ -24,16 +21,14 @@ public class Plug : Pickup
     public ProngType prongType;
 
     public Wire wire;
+    public PickupInsert socket = null;
 
-
-    public bool HasPower
+    public bool HasPower()
     {
-        get { return powered; }
-    }
+        if (wire)
+            return wire.HasPower();
 
-    public void SetPowered(bool state)
-    {
-        powered = state;
+        return false;
     }
 
     protected override void Update()
@@ -45,6 +40,27 @@ public class Plug : Pickup
             transform.rotation = Quaternion.Euler(new Vector3(-90, 0, 0));
         }
 
+        if (HasPower())
+        {
+            ringMaterial.SetColor("_Color", Color.green);
+            ringMaterial.SetColor("_EmissionColor", Color.green);
+        }
+        else
+        {
+            ringMaterial.SetColor("_Color", Color.red);
+            ringMaterial.SetColor("_EmissionColor", Color.red);
+        }
+    }
+
+    public override bool CanPickup()
+    {
+        if (base.CanPickup())
+        {
+            if (!socket || socket.CanUnplug())
+                return true;
+        }
+
+        return false;
     }
 
     public override void Interact()
@@ -73,19 +89,5 @@ public class Plug : Pickup
         materials[ringMaterialIndex] = ringMaterial;
         GetComponentInChildren<MeshRenderer>().sharedMaterials = materials.ToArray();
         base.Awake();
-        OnSocketDisconnected();
     }
-
-    public void OnSocketConnected()
-    {
-        ringMaterial.SetColor("_Color", Color.green);
-        ringMaterial.SetColor("_EmissionColor", Color.green);
-    }
-
-    public void OnSocketDisconnected()
-    {
-        ringMaterial.SetColor("_Color", Color.red);
-        ringMaterial.SetColor("_EmissionColor", Color.red);
-    }
-
 }

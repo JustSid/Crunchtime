@@ -18,6 +18,8 @@ public class PickupInsert : MonoBehaviour
     [SerializeField]
     private bool providesPower = false;
 
+    private bool isPowered = false;
+
     [SerializeField]
     private Plug.ProngType prongType;
 
@@ -59,6 +61,15 @@ public class PickupInsert : MonoBehaviour
     }
 
 
+    public bool CanUnplug()
+    {
+        return unpluggable;
+    }
+    public bool IsPowered()
+    {
+        return isPowered;
+    }
+
     public Plug currentPlug = null;
 
     public Transform plugPoint;
@@ -83,42 +94,48 @@ public class PickupInsert : MonoBehaviour
             currentPlug.transform.position = plugPoint.transform.position;
             currentPlug.transform.rotation = Quaternion.Euler(-90, 0, 0);
         }
+
+        bool hasPower = providesPower;
+
+        if (!hasPower && currentPlug)
+            hasPower = currentPlug.HasPower();
+
+        if (hasPower != isPowered)
+        {
+            isPowered = hasPower;
+
+            if (isPowered)
+            {
+                foreach(WirePowerAction action in powerActions)
+                    action.OnPowerEnabledInternal();
+            }
+            else
+            {
+                foreach(WirePowerAction action in powerActions)
+                    action.OnPowerDisabledInternal();
+            }
+
+            Color color = isPowered ? Color.green : Color.white;
+
+            foreach (LineRenderer renderer in lineRenderers)
+            {
+                renderer.startColor = color;
+                renderer.endColor = color;
+            }
+        }
     }
 
     public void OnPluggedIn(Plug plug)
     {
-        if (providesPower)
-        {
-            plug.SetPowered(true);
-        }
         this.currentPlug = plug;
-        plug.OnSocketConnected();
-
-        foreach (WirePowerAction action in powerActions)
-            action.OnPowerEnabledInternal();
-
-        foreach (LineRenderer renderer in lineRenderers)
-        {
-            renderer.startColor = Color.green;
-            renderer.endColor = Color.green;
-        }
+        plug.socket = this;
     }
 
     public void OnUnplugged()
     {
         if (currentPlug != null)
-        {
-            currentPlug.OnSocketDisconnected();
-        }
+            currentPlug.socket = null;
+
         currentPlug = null;
-
-        foreach (WirePowerAction action in powerActions)
-            action.OnPowerDisabledInternal();
-
-        foreach (LineRenderer renderer in lineRenderers)
-        {
-            renderer.startColor = Color.white;
-            renderer.endColor = Color.white;
-        }
     }
 }

@@ -5,6 +5,11 @@ using UnityEngine;
 public class HeldInteractable : MonoBehaviour
 {
 
+    public virtual bool CanPickup()
+    {
+        return true;
+    }
+
     public virtual void OnPickup(Player player)
     {
 

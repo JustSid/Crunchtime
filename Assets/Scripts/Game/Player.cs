@@ -129,11 +129,16 @@ public class Player : Actor
 
                         if (hits.Length > 0)
                         {
-                            pickup = hits[0].GetComponent<Pickup>();
-                            pickup.OnPickup(this);
-                            SetGlowFilter(null);
-                            pickup.gameObject.layer = 31;
-                            pickup.GetComponent<Rigidbody>().isKinematic = true;
+                            HeldInteractable potentialInteractable = hits[0].GetComponent<Pickup>();
+                            if (potentialInteractable.CanPickup())
+                            {
+                                pickup = potentialInteractable;
+
+                                pickup.OnPickup(this);
+                                SetGlowFilter(null);
+                                pickup.gameObject.layer = 31;
+                                pickup.GetComponent<Rigidbody>().isKinematic = true;
+                            }
                         }
                     }
                 }

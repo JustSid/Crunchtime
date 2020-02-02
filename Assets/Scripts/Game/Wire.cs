@@ -26,6 +26,9 @@ public class Wire : MonoBehaviour
         Assert.IsNotNull(plugs[0]);
         Assert.IsNotNull(plugs[1]);
 
+        plugs[0].wire = this;
+        plugs[1].wire = this;
+
         Vector3 start = plugs[0].transform.position;
         Vector3 end = plugs[1].transform.position;
         Vector3 direction = end - start;
@@ -57,6 +60,17 @@ public class Wire : MonoBehaviour
         lineRenderer.material = material;
 
         segmentPositions = new Vector3[totalSegments];
+    }
+
+    public bool HasPower()
+    {
+        foreach (Plug plug in plugs)
+        {
+            if (plug.socket && plug.socket.IsPowered())
+                return true;
+        }
+
+        return false;
     }
 
     void Update()
