@@ -12,9 +12,10 @@ public class Piston : WirePowerAction
     public bool activated = false;
     public float headDistance = 1f;
     private Player activePlayer = null;
-
     [SerializeField]
     private LayerMask squashTestMask;
+    [SerializeField]
+    private LayerMask squashKillMask;
 
     public Transform head;
     private Vector3 headStart;
@@ -55,19 +56,34 @@ public class Piston : WirePowerAction
     private void Update()
     {
         RaycastHit hit;
-        if (Physics.Raycast(new Ray(head.position, transform.up), out hit, 100, squashTestMask, QueryTriggerInteraction.Ignore))
+        Vector3 killdir = travellingUp ? transform.up : -transform.up;
+        if (Physics.Raycast(new Ray(head.position, killdir), out hit, 100, squashTestMask, QueryTriggerInteraction.Ignore))
         {
-            Debug.DrawLine(head.position, head.position + transform.up * hit.distance, Color.green, 1f);
+            Debug.DrawLine(head.position, head.position + killdir * hit.distance, Color.green, 1f);
             float dist = hit.distance;
 
-            Vector3 extents = head.GetComponent<Renderer>().bounds.extents * 0.5f;
-            extents += transform.up * dist * 0.5f;
-            Collider[] squashed = Physics.OverlapBox(head.position + transform.up * dist * 0.5f, extents, Quaternion.identity);
-            foreach (Collider collider in squashed)
+            Vector3 extents = head.GetComponent<Renderer>().bounds.extents * 0.95f;
+            extents += killdir * dist * 0.5f;
+            Collider[] squashed = Physics.OverlapBox(head.position + killdir * dist * 0.5f, extents, Quaternion.identity, squashKillMask);
+            if (squashed.Length > 0)
             {
-                if (collider.bounds.min.y > head.position.y && collider.bounds.max.y - collider.bounds.min.y > dist - .1f)
+                int axis = 0;
+                float largeV = Mathf.Abs(killdir[0]);
+                for (int i = 1; i < 3; i++)
                 {
-                    Destroy(collider.gameObject);
+                    if (Mathf.Abs(killdir[i]) > largeV)
+                    {
+                        axis = i;
+                        largeV = Mathf.Abs(killdir[i]);
+                    }
+                }
+                foreach (Collider collider in squashed)
+                {
+
+                    if (hit.distance <= collider.bounds.max[axis] - collider.bounds.min[axis])
+                    {
+                        Destroy(collider.gameObject);
+                    }
                 }
             }
         }
@@ -81,7 +97,7 @@ public class Piston : WirePowerAction
             {
                 if (activePlayer != null)
                 {
-                    activePlayer.GetComponent<PlayerController>().AddForce(Vector3.up * upForcePlayer);
+                    activePlayer.GetComponent<PlayerController>().AddForce(transform.up * upForcePlayer);
                 }
                 float mag = upForce * Time.fixedDeltaTime;
                 float remaining = headDistance - (head.position - headStart).magnitude;
@@ -128,6 +144,20 @@ public class Piston : WirePowerAction
             else
             {
                 Gizmos.DrawLine(head.position, head.position + transform.up * headDistance);
+            }
+        }
+        if (head != null)
+        {
+            RaycastHit hit;
+            Gizmos.matrix = Matrix4x4.identity;
+            Vector3 killdir = travellingUp ? transform.up : -transform.up;
+            if (Physics.Raycast(new Ray(head.position, killdir), out hit, 100, squashTestMask, QueryTriggerInteraction.Ignore))
+            {
+                float dist = hit.distance;
+                Vector3 extents = head.GetComponent<Renderer>().bounds.extents * 0.95f;
+                extents += killdir * dist * 0.5f;
+                Collider[] squashed = Physics.OverlapBox(head.position + killdir * dist * 0.5f, extents, Quaternion.identity);
+                Gizmos.DrawWireCube(head.position + killdir * dist * 0.5f, extents * 2f);
             }
         }
     }
