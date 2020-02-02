@@ -9,6 +9,15 @@ EditorBuildSettings:
     path: Assets/MAIN.unity
     guid: 87fdfa5d982eac0428c969e6c0c6dfab
   - enabled: 1
+    path: Assets/Scenes/Beginning.unity
+    guid: 46805eeaa6eb20446b4a78dd092218f1
+  - enabled: 1
+    path: Assets/Scenes/BlueprintLevel.unity
+    guid: 33af1dbd198bb4c5bac12f679c961e38
+  - enabled: 1
+    path: Assets/Scenes/Prototype Sid.unity
+    guid: 5215e60ce2438cf4f87de79df1201b4b
+  - enabled: 1
     path: Assets/Scenes/MakingTheRopeSwing.unity
     guid: 4605da0f67061ce4a93871dd35ce806a
   m_configObjects: {}
