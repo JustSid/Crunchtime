@@ -17,4 +17,10 @@ public class SpawnPoint : MonoBehaviour
         //cameraRig.SnapToTarget();
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position + Vector3.up * 0.5f, 0.5f);
+        Gizmos.DrawWireSphere(transform.position + Vector3.up * 1.5f, 0.5f);
+    }
+
 }

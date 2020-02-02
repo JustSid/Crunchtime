@@ -258,7 +258,7 @@ MonoBehaviour:
   controller: {fileID: 4305418869540649277}
   groundMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 1280
   gravityDirection: {x: 0, y: -1, z: 0}
   gravityStrength: 200
   moveForce: 50
