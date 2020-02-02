@@ -66,10 +66,6 @@ public class PlayerController : MonoBehaviour
                 break;
             }
         }
-        if (!grounded)
-        {
-            Debug.Log("floating!");
-        }
 
         float left = Input.GetKey(KeyCode.A) ? 1 * (player.allowLeftMovement ? 1 : 0) : 0;
         float right = Input.GetKey(KeyCode.D) ? 1 * (player.allowRightMovement ? 1 : 0) : 0;
@@ -116,7 +112,7 @@ public class PlayerController : MonoBehaviour
             {
                 Transform groundRef = groundReferences[2];
                 bool hit = Physics.Raycast(new Ray(groundRef.position + Vector3.up, Vector3.down), out raycastHit, .1f + Mathf.Abs(velocity.x) * .2f, groundMask, QueryTriggerInteraction.Ignore);
-                if (hit)
+                if (hit && Vector3.Dot(raycastHit.normal, Vector3.down) > 0.45f)
                 {
                     Debug.DrawLine(raycastHit.point, raycastHit.point + raycastHit.normal, Color.red, 0.1f);
                     maxDist = Mathf.Min((raycastHit.point - groundRef.position).y, maxDist);

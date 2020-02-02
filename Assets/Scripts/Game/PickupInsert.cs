@@ -10,6 +10,11 @@ public class PickupInsert : MonoBehaviour
     [SerializeField]
     private WirePowerAction powerActions;
 
+
+    public Plug currentPlug = null;
+
+    public Transform plugPoint;
+
     private void OnDrawGizmos()
     {
         if (collider == null)
@@ -23,13 +28,35 @@ public class PickupInsert : MonoBehaviour
         }
     }
 
-    public void OnPluggedIn()
+    private void Update()
     {
+        if (currentPlug != null)
+        {
+            currentPlug.transform.position = plugPoint.transform.position;
+            currentPlug.transform.rotation = Quaternion.Euler(-90, 0, 0);
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+
+    }
+
+
+    public void OnPluggedIn(Plug plug)
+    {
+        this.currentPlug = plug;
+        plug.OnSocketConnected();
         powerActions.OnPowerEnabledInternal();
     }
 
     public void OnUnplugged()
     {
+        if (currentPlug != null)
+        {
+            currentPlug.OnSocketDisconnected();
+        }
+        currentPlug = null;
         powerActions.OnPowerDisabledInternal();
     }
 }
