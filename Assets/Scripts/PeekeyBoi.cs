@@ -19,12 +19,15 @@ public class PeekeyBoi : MonoBehaviour
 
     void Update()
     {
-        if(cameratracksTarget) cam.transform.LookAt(followTarget);
-        transform.position = useLerp ? Vector3.Lerp(transform.position, followTarget.position, travelSpeed * Time.deltaTime) : Vector3.MoveTowards(transform.position, followTarget.position, travelSpeed * Time.deltaTime);
-        float dist = Vector3.Distance(followTarget.position, transform.position);
-        if(dist > maxDistance)
+        if (followTarget != null)
         {
-            transform.position = Vector3.MoveTowards(transform.position, followTarget.position, dist - maxDistance);
+            if (cameratracksTarget) cam.transform.LookAt(followTarget);
+            transform.position = useLerp ? Vector3.Lerp(transform.position, followTarget.position, travelSpeed * Time.deltaTime) : Vector3.MoveTowards(transform.position, followTarget.position, travelSpeed * Time.deltaTime);
+            float dist = Vector3.Distance(followTarget.position, transform.position);
+            if (dist > maxDistance)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, followTarget.position, dist - maxDistance);
+            }
         }
     }
 

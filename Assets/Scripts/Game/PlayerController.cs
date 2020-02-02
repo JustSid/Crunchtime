@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private Transform rotationTransform;
+
+  
     void Awake()
     {
         controller = gameObject.GetComponent<Rigidbody>();

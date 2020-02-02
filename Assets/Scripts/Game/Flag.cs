@@ -12,6 +12,9 @@ public class Flag : WirePowerAction
     private MeshRenderer flagRenderer;
 
     [SerializeField]
+    private AudioClip winClip;
+
+    [SerializeField]
     private string sceneName;
 
     private bool alwaysPowered = false;
@@ -28,6 +31,7 @@ public class Flag : WirePowerAction
         Player player = other.gameObject.GetComponent<Player>();
         if (powered || alwaysPowered)
         {
+            AudioSource.PlayClipAtPoint(winClip, transform.position);
             SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
         }
     }
