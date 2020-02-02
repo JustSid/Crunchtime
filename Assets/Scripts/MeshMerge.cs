@@ -22,7 +22,7 @@ public class MeshMerge : MonoBehaviour
 {
 
     public List<MeshFilter> filters = new List<MeshFilter>();
-
+    public Mesh mesh;
     public void MergeChildren()
     {
         Debug.Log("Filters count " + filters.Count);
@@ -61,6 +61,7 @@ public class MeshMerge : MonoBehaviour
                 uvs.AddRange(tm.uv);
             }
         }
+
         Mesh mesh = new Mesh();
         mesh.SetVertices(verts);
         mesh.SetNormals(norms);
@@ -72,9 +73,24 @@ public class MeshMerge : MonoBehaviour
             mesh.SetTriangles(tris2, 1);
         }
 #if UNITY_EDITOR
-        AssetDatabase.CreateAsset(mesh, "Assets/Outmesh.asset");
-        AssetDatabase.Refresh();
-        GetComponent<MeshFilter>().sharedMesh = AssetDatabase.LoadAssetAtPath<Mesh>("Assets/Outmesh.asset");
+        string path = AssetDatabase.GetAssetPath(this.mesh);
+        if (this.mesh == null)
+        {
+            AssetDatabase.CreateAsset(mesh, "Assets/Outmesh.asset");
+            AssetDatabase.Refresh();
+            mesh = AssetDatabase.LoadAssetAtPath<Mesh>("Assets/Outmesh.asset");
+            GetComponent<MeshFilter>().sharedMesh = AssetDatabase.LoadAssetAtPath<Mesh>("Assets/Outmesh.asset");
+        }
+        else
+        {
+            AssetDatabase.DeleteAsset(path);
+            AssetDatabase.CreateAsset(mesh,path);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.ImportAsset(path);
+            AssetDatabase.Refresh();
+            this.mesh = AssetDatabase.LoadAssetAtPath<Mesh>(path);
+            GetComponent<MeshFilter>().sharedMesh = this.mesh;
+        }
 #else
         GetComponent<MeshFilter>().sharedMesh=mesh;
 #endif
