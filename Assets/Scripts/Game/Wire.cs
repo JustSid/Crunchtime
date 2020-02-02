@@ -89,7 +89,6 @@ public class Wire : MonoBehaviour
             Vector3 position = segment.transform.position + velocity;
             position += (Vector3.down * 0.8f) * Time.fixedDeltaTime;
 
-   
             segment.transform.position = AdjustSegmentPosition(segment, position);
         }
     }
