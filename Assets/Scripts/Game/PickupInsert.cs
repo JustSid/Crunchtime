@@ -23,6 +23,10 @@ public class PickupInsert : MonoBehaviour
     [SerializeField]
     private Plug.ProngType prongType;
 
+
+    [SerializeField]
+    private BoxCollider standCollider;
+
     public Plug.ProngType ProngType
     {
         get { return prongType; }
@@ -81,7 +85,7 @@ public class PickupInsert : MonoBehaviour
     {
         Gizmos.color = Color.red;
 
-        foreach(WirePowerAction action in powerActions)
+        foreach (WirePowerAction action in powerActions)
             Gizmos.DrawLine(action.transform.position, transform.position);
 
         if (collider == null)
@@ -115,12 +119,12 @@ public class PickupInsert : MonoBehaviour
 
             if (isPowered)
             {
-                foreach(WirePowerAction action in powerActions)
+                foreach (WirePowerAction action in powerActions)
                     action.OnPowerEnabledInternal();
             }
             else
             {
-                foreach(WirePowerAction action in powerActions)
+                foreach (WirePowerAction action in powerActions)
                     action.OnPowerDisabledInternal();
             }
 
@@ -137,10 +141,12 @@ public class PickupInsert : MonoBehaviour
     public void OnPluggedIn(Plug plug)
     {
         currentPlug = plug;
+        standCollider.enabled = true;
     }
 
     public void OnUnplugged()
     {
         currentPlug = null;
+        standCollider.enabled = false;
     }
 }
