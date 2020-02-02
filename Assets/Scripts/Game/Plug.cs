@@ -10,9 +10,6 @@ public class Plug : Pickup
         TwoNA, ThreeNA
     }
 
-    private bool pluggedIn = false;
-
-
     public int ringMaterialIndex = 1;
 
     private Material ringMaterial;
@@ -35,7 +32,7 @@ public class Plug : Pickup
     {
         base.Update();
 
-        if (pluggedIn)
+        if (socket)
         {
             transform.rotation = Quaternion.Euler(new Vector3(-90, 0, 0));
         }
@@ -63,6 +60,17 @@ public class Plug : Pickup
         return false;
     }
 
+    public override void OnPickup(Player player)
+    {
+        base.OnPickup(player);
+
+        if (socket)
+        {
+            socket.OnUnplugged();
+            socket = null;
+        }
+    }
+
     public override void Interact()
     {
         base.Interact();
@@ -72,9 +80,10 @@ public class Plug : Pickup
             PickupInsert insert = interactable.GetComponentInParent<PickupInsert>();
             if (insert.ProngType == prongType)
             {
+                socket = insert;
+
                 body.isKinematic = true;
-                pluggedIn = true;
-                insert.OnPluggedIn(this as Plug);
+                socket.OnPluggedIn(this as Plug);
                 pickedup.DropHeld();
                 body.isKinematic = true;
             }

@@ -56,8 +56,11 @@ public class PickupInsert : MonoBehaviour
             lineRenderers.Add(renderer);
         }
 
-        if(currentPlug)
+        if (currentPlug)
+        {
             OnPluggedIn(currentPlug);
+            currentPlug.socket = this;
+        }
     }
 
 
@@ -65,9 +68,9 @@ public class PickupInsert : MonoBehaviour
     {
         return unpluggable;
     }
-    public bool IsPowered()
+    public bool ProvidesPower()
     {
-        return isPowered;
+        return providesPower;
     }
 
     public Plug currentPlug = null;
@@ -127,15 +130,11 @@ public class PickupInsert : MonoBehaviour
 
     public void OnPluggedIn(Plug plug)
     {
-        this.currentPlug = plug;
-        plug.socket = this;
+        currentPlug = plug;
     }
 
     public void OnUnplugged()
     {
-        if (currentPlug != null)
-            currentPlug.socket = null;
-
         currentPlug = null;
     }
 }

@@ -66,7 +66,7 @@ public class Wire : MonoBehaviour
     {
         foreach (Plug plug in plugs)
         {
-            if (plug.socket && plug.socket.IsPowered())
+            if (plug.socket && plug.socket.ProvidesPower())
                 return true;
         }
 
