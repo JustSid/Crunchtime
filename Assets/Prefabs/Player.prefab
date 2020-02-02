@@ -128,6 +128,7 @@ MonoBehaviour:
   deathEvent:
     m_PersistentCalls:
       m_Calls: []
+  deathEffect: {fileID: 8300000, guid: 6226bba87b3e62b4eb778a4eaa4cb291, type: 3}
   allowLeftMovement: 1
   allowRightMovement: 1
   allowPickup: 1

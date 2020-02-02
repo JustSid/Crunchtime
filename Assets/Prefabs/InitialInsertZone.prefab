@@ -187,6 +187,10 @@ MonoBehaviour:
   unpluggable: 0
   providesPower: 0
   prongType: 1
+  plugSound: {fileID: 8300000, guid: 704d341e035d66541939339a15f9f351, type: 3}
+  unplugSound: {fileID: 8300000, guid: 298221a0f61c79c46a816c7e243d183e, type: 3}
+  standCollider: {fileID: 0}
+  insertZone: {fileID: 0}
   currentPlug: {fileID: 0}
   plugPoint: {fileID: 8481090442045935556}
 --- !u!1 &9168751479152467980
