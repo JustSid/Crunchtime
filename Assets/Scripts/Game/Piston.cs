@@ -27,12 +27,14 @@ public class Piston : WirePowerAction
 
     private void Awake()
     {
+
         headStart = head.transform.position;
         if (!usePistonNeck)
         {
             Destroy(pistonNeck);
         }
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -94,9 +96,16 @@ public class Piston : WirePowerAction
                         if (player != null)
                         {
                             player.OnDeath();
-                            Destroy(collider.gameObject);
-                            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-                            break;
+                            if (this.enabled)
+                            {
+                                this.enabled = false;
+                            }
+                            DestroyImmediate(collider.gameObject);
+                            DestroyImmediate(gameObject);
+                            Debug.Log("Player Loading Scene");
+                            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+                            return;
+
                         }
                         else
                         {
