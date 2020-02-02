@@ -8,7 +8,7 @@ public class PickupInsert : MonoBehaviour
     private BoxCollider collider;
 
     [SerializeField]
-    private WirePowerAction powerActions;
+    private List<WirePowerAction> powerActions = new List<WirePowerAction>();
 
     private void OnDrawGizmos()
     {
@@ -25,11 +25,13 @@ public class PickupInsert : MonoBehaviour
 
     public void OnPluggedIn()
     {
-        powerActions.OnPowerEnabledInternal();
+        foreach(WirePowerAction action in powerActions)
+            action.OnPowerEnabledInternal();
     }
 
     public void OnUnplugged()
     {
-        powerActions.OnPowerDisabledInternal();
+        foreach(WirePowerAction action in powerActions)
+            action.OnPowerDisabledInternal();
     }
 }
