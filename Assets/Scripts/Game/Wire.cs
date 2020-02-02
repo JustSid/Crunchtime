@@ -14,7 +14,7 @@ public class Wire : MonoBehaviour
     private const float SegmentLength = 0.3f;
     private const float LineWidth = 0.1f;
 
-    Collider[] ColliderHitBuffer = new Collider[1];
+    RaycastHit[] hits = new RaycastHit[1];
 
     private List<WireSegment> wireSegments = new List<WireSegment>();
 
@@ -53,13 +53,6 @@ public class Wire : MonoBehaviour
         segmentPositions = new Vector3[totalSegments];
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
         DrawLineSegments();
@@ -69,7 +62,7 @@ public class Wire : MonoBehaviour
     {
         Simulate();
 
-        for(int i = 0; i < 80; ++i)
+        for (int i = 0; i < 80; ++i)
             AdjustConstraint();
     }
 
@@ -94,31 +87,10 @@ public class Wire : MonoBehaviour
             segment.previousPosition = segment.transform.position;
 
             Vector3 position = segment.transform.position + velocity;
-            position += Vector3.down * 5f * Time.fixedDeltaTime;
+            position += (Vector3.down * 0.8f) * Time.fixedDeltaTime;
 
-            Vector3 direction = segment.transform.position - position;
-
-#if true
-            RaycastHit[] hits = Physics.SphereCastAll(segment.transform.position, SegmentLength * 0.5f, -direction.normalized, direction.magnitude);
-
-            foreach(RaycastHit hit in hits)
-            {
-                if(hit.collider.GetComponent<Plug>())
-                    continue;
-
-                if(hit.collider.gameObject.layer == 8)
-                {
-                    Vector3 center = hit.collider.transform.position;
-                    Vector3 collisionDirection = hit.point - center;
-
-                    position = hit.point;// + collisionDirection.normalized * SegmentLength * 0.5f;
-                    segment.previousPosition = position;
-                    break;
-                }
-            }
-#endif
-
-            segment.transform.position = new Vector3(position.x, position.y, 0);
+   
+            segment.transform.position = AdjustSegmentPosition(segment, position);
         }
     }
 
@@ -143,8 +115,34 @@ public class Wire : MonoBehaviour
                 direction = (segment2.transform.position - segment1.transform.position).normalized;
 
             Vector3 movement = direction * difference;
-            segment1.transform.position -= (movement * 0.5f);
-            segment2.transform.position += (movement * 0.5f);
+            segment1.transform.position = AdjustSegmentPosition(segment1, segment1.transform.position - (movement * 0.5f));
+            segment2.transform.position = AdjustSegmentPosition(segment2, segment2.transform.position + (movement * 0.5f));
         }
+    }
+
+    private Vector3 AdjustSegmentPosition(WireSegment segment, Vector3 newPosition)
+    {
+#if true
+        Vector3 direction = segment.transform.position - newPosition;
+
+        Ray ray = new Ray(segment.transform.position, -direction.normalized);
+        int result = Physics.RaycastNonAlloc(ray, hits, direction.magnitude);
+
+        for(int i = 0; i < result; ++i)
+        {
+            RaycastHit hit = hits[i];
+
+            if(hit.collider.GetComponent<Plug>())
+                continue;
+
+            if(hit.collider.gameObject.layer == 8)
+            {
+                newPosition = hit.point + (hit.normal * direction.magnitude);
+                break;
+            }
+        }
+#endif
+
+        return new Vector3(newPosition.x, newPosition.y, 0);
     }
 }
