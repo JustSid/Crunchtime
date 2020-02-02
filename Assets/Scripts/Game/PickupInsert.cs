@@ -12,6 +12,20 @@ public class PickupInsert : MonoBehaviour
 
     private List<LineRenderer> lineRenderers = new List<LineRenderer>();
 
+    [SerializeField]
+    private bool unpluggable = false;
+
+    [SerializeField]
+    private bool providesPower = false;
+
+    [SerializeField]
+    private Plug.ProngType prongType;
+
+    public Plug.ProngType ProngType
+    {
+        get { return prongType; }
+    }
+
     void Awake()
     {
         Material material = new Material(Shader.Find("Unlit/VertexColor"));
@@ -70,10 +84,14 @@ public class PickupInsert : MonoBehaviour
 
     public void OnPluggedIn(Plug plug)
     {
+        if (providesPower)
+        {
+            plug.SetPowered(true);
+        }
         this.currentPlug = plug;
         plug.OnSocketConnected();
 
-        foreach(WirePowerAction action in powerActions)
+        foreach (WirePowerAction action in powerActions)
             action.OnPowerEnabledInternal();
 
         foreach (LineRenderer renderer in lineRenderers)
@@ -85,16 +103,16 @@ public class PickupInsert : MonoBehaviour
 
     public void OnUnplugged()
     {
-    	if (currentPlug != null)
+        if (currentPlug != null)
         {
             currentPlug.OnSocketDisconnected();
         }
         currentPlug = null;
 
-        foreach(WirePowerAction action in powerActions)
+        foreach (WirePowerAction action in powerActions)
             action.OnPowerDisabledInternal();
 
-        foreach(LineRenderer renderer in lineRenderers)
+        foreach (LineRenderer renderer in lineRenderers)
         {
             renderer.startColor = Color.white;
             renderer.endColor = Color.white;

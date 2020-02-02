@@ -6,13 +6,12 @@ using UnityEngine;
 [RequireComponent(typeof(Collider), typeof(Rigidbody))]
 public class Pickup : HeldInteractable
 {
-    private Collider col;
-    private Rigidbody body;
+    protected Collider col;
+    protected Rigidbody body;
 
-    private Player pickedup;
-    private InsertZone interactable;
+    protected Player pickedup;
+    protected InsertZone interactable;
 
-    private bool pluggedIn = false;
 
 
     protected virtual void Awake()
@@ -21,23 +20,20 @@ public class Pickup : HeldInteractable
         body = GetComponent<Rigidbody>();
     }
 
+    protected virtual void Update()
+    {
+        if (pickedup != null)
+        {
+            transform.rotation = Quaternion.Euler(new Vector3(135, 0, 0));
+        }
+    }
+
     public override void OnPickup(Player player)
     {
         base.OnPickup(player);
         this.pickedup = player;
     }
 
-    private void Update()
-    {
-        if (pickedup != null)
-        {
-            transform.rotation = Quaternion.Euler(new Vector3(135, 0, 0));
-        }
-        else if (pluggedIn)
-        {
-            transform.rotation = Quaternion.Euler(new Vector3(-90, 0, 0));
-        }
-    }
 
     public override void OnDrop()
     {
@@ -47,15 +43,7 @@ public class Pickup : HeldInteractable
     public override void Interact()
     {
         base.Interact();
-        if (interactable != null)
-        {
-            body.isKinematic = true;
-            pluggedIn = true;
-            Debug.Log("Plug in!");
-            interactable.GetComponentInParent<PickupInsert>().OnPluggedIn(this as Plug);
-            pickedup.DropHeld();
-            body.isKinematic = true;
-        }
+
     }
 
     private void OnTriggerEnter(Collider other)

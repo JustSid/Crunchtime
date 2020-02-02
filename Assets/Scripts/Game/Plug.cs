@@ -4,14 +4,66 @@ using UnityEngine;
 
 public class Plug : Pickup
 {
+    [System.Serializable]
     public enum ProngType
     {
         TwoNA, ThreeNA
     }
 
+    [SerializeField]
+    private bool powered = false;
+
+    private bool pluggedIn = false;
+
+
     public int ringMaterialIndex = 1;
 
     private Material ringMaterial;
+
+
+    public ProngType prongType;
+
+    public Wire wire;
+
+
+    public bool HasPower
+    {
+        get { return powered; }
+    }
+
+    public void SetPowered(bool state)
+    {
+        powered = state;
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+
+        if (pluggedIn)
+        {
+            transform.rotation = Quaternion.Euler(new Vector3(-90, 0, 0));
+        }
+
+    }
+
+    public override void Interact()
+    {
+        base.Interact();
+        if (interactable != null)
+        {
+
+            PickupInsert insert = interactable.GetComponentInParent<PickupInsert>();
+            if (insert.ProngType == prongType)
+            {
+                body.isKinematic = true;
+                pluggedIn = true;
+                insert.OnPluggedIn(this as Plug);
+                pickedup.DropHeld();
+                body.isKinematic = true;
+            }
+        }
+    }
 
     protected override void Awake()
     {
@@ -35,7 +87,5 @@ public class Plug : Pickup
         ringMaterial.SetColor("_Color", Color.red);
         ringMaterial.SetColor("_EmissionColor", Color.red);
     }
-
-    public ProngType prongType;
 
 }

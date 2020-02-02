@@ -3613,6 +3613,11 @@ PrefabInstance:
       propertyPath: powerActions.Array.data[0]
       value: 
       objectReference: {fileID: 363843965}
+    - target: {fileID: 4363072100570633472, guid: 9d18091540664404bb01c4286da05f01,
+        type: 3}
+      propertyPath: prongType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4363072100570633473, guid: 9d18091540664404bb01c4286da05f01,
         type: 3}
       propertyPath: m_LocalPosition.x
