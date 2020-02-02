@@ -6,10 +6,10 @@ using UnityEngine.Assertions;
 public class Wire : MonoBehaviour
 {
     [SerializeField]
-    private List<Plug> plugs = new List<Plug>();
+    private Plug[] plugs = new Plug[2];
 
     [SerializeField]
-    private float extraLength = 10.0f;
+    private float extraLength = 1.0f;
 
     private const float SegmentLength = 0.3f;
     private const float LineWidth = 0.1f;
@@ -23,7 +23,8 @@ public class Wire : MonoBehaviour
 
     void Awake()
     {
-        Assert.IsTrue(plugs.Count == 2);
+        Assert.IsNotNull(plugs[0]);
+        Assert.IsNotNull(plugs[1]);
 
         Vector3 start = plugs[0].transform.position;
         Vector3 end = plugs[1].transform.position;
@@ -46,9 +47,14 @@ public class Wire : MonoBehaviour
             start += direction * adjustedSegmentLength;
         }
 
-        lineRenderer = this.GetComponent<LineRenderer>();
+        Material material = new Material(Shader.Find("Unlit/VertexColor"));
+
+        lineRenderer = gameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
         lineRenderer.startWidth = LineWidth;
         lineRenderer.endWidth = LineWidth;
+        lineRenderer.startColor = Color.white;
+        lineRenderer.endColor = Color.white;
+        lineRenderer.material = material;
 
         segmentPositions = new Vector3[totalSegments];
     }

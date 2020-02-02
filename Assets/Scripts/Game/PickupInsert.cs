@@ -53,6 +53,9 @@ public class PickupInsert : MonoBehaviour
 
             lineRenderers.Add(renderer);
         }
+
+        if(currentPlug)
+            OnPluggedIn(currentPlug);
     }
 
 
